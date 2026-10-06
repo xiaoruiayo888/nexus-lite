@@ -1,0 +1,21 @@
+<launch>
+  <!--
+    一键启动：MAVROS + px4_bridge + odom_bridge
+    前提：PX4 SITL 已在运行（Gazebo Classic），开放 UDP 14540。
+  -->
+
+  <!-- MAVROS：连接 PX4 SITL -->
+  <node pkg="mavros" type="mavros_node" name="mavros" output="screen">
+    <!-- FCU: 本机 14540 收，PX4 收在 14557 -->
+    <param name="fcu_url" value="udp://:14540@127.0.0.1:14557"/>
+    <!-- GCS(QGC) 桥接到 14550 -->
+    <param name="gcs_url" value="udp://@127.0.0.1:14550"/>
+    <param name="target_system_id" value="1"/>
+    <param name="target_component_id" value="1"/>
+    <param name="startup_px4_usb_quirk" value="false"/>
+    <!-- MAVROS 默认按 PX4 加载全部插件并自动做 NED<->ENU，无需额外 frame 配置 -->
+  </node>
+
+  <!-- 控制桥 + 里程计反向桥 -->
+  <include file="$(find px4_bridge)/launch/bridge.launch"/>
+</launch>

@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>px4_sitl_gazebo</name>
+  <version>0.1.0</version>
+  <description>Gazebo Classic resources for the drone260 PX4 SITL (ROS Noetic)</description>
+
+  <maintainer email="dev@example.com">px4-bridge</maintainer>
+  <license>MIT</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <exec_depend>gazebo_ros</exec_depend>
+  <exec_depend>gazebo_plugins</exec_depend>
+</package>

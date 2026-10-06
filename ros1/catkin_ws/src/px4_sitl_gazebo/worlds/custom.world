@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<sdf version="1.6">
+  <world name="default">
+
+    <!-- 地面 -->
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+
+    <!-- 太阳（环境光 + 平行光） -->
+    <include>
+      <uri>model://sun</uri>
+    </include>
+
+    <!-- 场景：虚拟机性能较弱，默认关闭实时阴影；需要时改 1 -->
+    <scene>
+      <shadows>0</shadows>
+      <grid>1</grid>
+      <ambient>0.6 0.6 0.6 1</ambient>
+      <background>0.7 0.7 0.7 1</background>
+    </scene>
+
+    <!-- 物理：默认 ODE，适当放宽步长以利 VM -->
+    <physics name="ode" type="ode" default="true">
+      <real_time_update_rate>250</real_time_update_rate>
+      <max_step_size>0.004</max_step_size>
+    </physics>
+
+    <gravity>0 0 -9.8066</gravity>
+  </world>
+</sdf>

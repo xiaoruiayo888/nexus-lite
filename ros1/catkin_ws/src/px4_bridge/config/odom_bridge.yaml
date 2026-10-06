@@ -1,0 +1,20 @@
+# 视觉里程计反向桥参数（加载到 odom_bridge_node 私有命名空间）
+# 输入：Gazebo 里程计（ENU, nav_msgs/Odometry）
+input_topic: /drone260/odom
+input_type: odometry          # odometry | pose
+
+# 输出：发给 MAVROS（二选一）
+#   pose  -> mavros/vision_pose/pose (geometry_msgs/PoseStamped)，最常用
+#   odom  -> mavros/odometry/in      (nav_msgs/Odometry)
+output_topic: mavros/vision_pose/pose
+output_type: pose             # pose | odom
+output_frame: map
+
+# 安装/坐标偏移（输入 ENU 上的修正）
+position_offset: [0.0, 0.0, 0.0]
+rotation_offset_rpy: [0.0, 0.0, 0.0]
+
+# VISION_POSITION_ESTIMATE 质量（0..100）
+quality: 90
+# 重发布频率（Hz）；<=0 表示跟随输入
+publish_rate_hz: 30.0

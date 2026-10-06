@@ -1,0 +1,26 @@
+#!/usr/bin/env python3
+"""px4_bridge 主节点入口（ROS1）。"""
+
+import sys
+
+import rospy
+
+from px4_bridge.node import PX4BridgeNode
+
+
+def main() -> int:
+    rospy.init_node("px4_bridge", anonymous=False)
+
+    node = PX4BridgeNode(
+        loop_hz=rospy.get_param("~loop_hz", 20),
+        connection_timeout_ms=rospy.get_param("~connection_timeout_ms", 1000),
+        realtime_timeout_ms=rospy.get_param("~realtime_timeout_ms", 300),
+        realtime_max_speed_mps=rospy.get_param("~realtime_max_speed_mps", 2.0),
+        mav_namespace=rospy.get_param("~mavros_namespace", "mavros"),
+    )
+    node.start()
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

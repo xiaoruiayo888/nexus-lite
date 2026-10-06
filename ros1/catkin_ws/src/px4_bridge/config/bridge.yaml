@@ -1,0 +1,6 @@
+# px4_bridge 主节点参数（加载到节点私有命名空间）
+loop_hz: 20
+connection_timeout_ms: 1000
+realtime_timeout_ms: 300
+realtime_max_speed_mps: 2.0
+mavros_namespace: mavros

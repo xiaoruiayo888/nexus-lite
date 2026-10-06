@@ -1,0 +1,19 @@
+#!/usr/bin/env python3
+"""视觉里程计反向桥入口（ROS1）：Gazebo 里程计 -> MAVROS vision/odometry 输入。"""
+
+import sys
+
+import rospy
+
+from px4_bridge.odom_bridge import OdomBridge
+
+
+def main() -> int:
+    rospy.init_node("px4_odom_bridge", anonymous=False)
+    node = OdomBridge.from_rosparams()
+    node.start()
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

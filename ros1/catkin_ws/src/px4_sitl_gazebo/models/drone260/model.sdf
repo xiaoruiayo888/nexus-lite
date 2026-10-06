@@ -1,0 +1,342 @@
+<?xml version="1.0"?>
+<sdf version="1.6">
+  <model name="drone260">
+    <pose>0 0 0.24 0 0 0</pose>
+    <self_collide>false</self_collide>
+    <static>false</static>
+
+    <!-- ===================== base_link ===================== -->
+    <link name="base_link">
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+        <mass>1.0</mass>
+        <inertia>
+          <ixx>0.0216667</ixx><ixy>0</ixy><ixz>0</ixz>
+          <iyy>0.0216667</iyy><iyz>0</iyz>
+          <izz>0.04</izz>
+        </inertia>
+      </inertial>
+
+      <visual name="base_link_visual">
+        <pose>0.185 0.185 0.025 0 0 3.14159265</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://drone260/meshes/drone.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/DarkGrey</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+        </material>
+      </visual>
+
+      <collision name="base_link_collision">
+        <pose>0 0 0.007 0 0 0</pose>
+        <geometry>
+          <box><size>0.37 0.37 0.1</size></box>
+        </geometry>
+      </collision>
+    </link>
+
+    <!-- ===================== rotors ===================== -->
+    <!--
+      X 型四旋翼布局（与 ROS2 版一致）：
+        rotor_0 ( 0.092,-0.092,0.052) ccw
+        rotor_1 (-0.092, 0.092,0.052) ccw
+        rotor_2 ( 0.092, 0.092,0.052) cw
+        rotor_3 (-0.092,-0.092,0.052) cw
+    -->
+
+    <link name="rotor_0">
+      <pose>0.092 -0.092 0.052 0 0 0</pose>
+      <inertial>
+        <mass>0.01</mass>
+        <inertia>
+          <ixx>1e-5</ixx><ixy>0</ixy><ixz>0</ixz>
+          <iyy>1e-5</iyy><iyz>0</iyz><izz>1e-5</izz>
+        </inertia>
+      </inertial>
+      <visual name="rotor_0_visual">
+        <geometry>
+          <mesh><uri>model://drone260/meshes/motor.stl</uri></mesh>
+        </geometry>
+      </visual>
+    </link>
+
+    <link name="rotor_1">
+      <pose>-0.092 0.092 0.052 0 0 0</pose>
+      <inertial>
+        <mass>0.01</mass>
+        <inertia>
+          <ixx>1e-5</ixx><ixy>0</ixy><ixz>0</ixz>
+          <iyy>1e-5</iyy><iyz>0</iyz><izz>1e-5</izz>
+        </inertia>
+      </inertial>
+      <visual name="rotor_1_visual">
+        <geometry>
+          <mesh><uri>model://drone260/meshes/motor.stl</uri></mesh>
+        </geometry>
+      </visual>
+    </link>
+
+    <link name="rotor_2">
+      <pose>0.092 0.092 0.052 0 0 0</pose>
+      <inertial>
+        <mass>0.01</mass>
+        <inertia>
+          <ixx>1e-5</ixx><ixy>0</ixy><ixz>0</ixz>
+          <iyy>1e-5</iyy><iyz>0</iyz><izz>1e-5</izz>
+        </inertia>
+      </inertial>
+      <visual name="rotor_2_visual">
+        <geometry>
+          <mesh><uri>model://drone260/meshes/motor.stl</uri></mesh>
+        </geometry>
+      </visual>
+    </link>
+
+    <link name="rotor_3">
+      <pose>-0.092 -0.092 0.052 0 0 0</pose>
+      <inertial>
+        <mass>0.01</mass>
+        <inertia>
+          <ixx>1e-5</ixx><ixy>0</ixy><ixz>0</ixz>
+          <iyy>1e-5</iyy><iyz>0</iyz><izz>1e-5</izz>
+        </inertia>
+      </inertial>
+      <visual name="rotor_3_visual">
+        <geometry>
+          <mesh><uri>model://drone260/meshes/motor.stl</uri></mesh>
+        </geometry>
+      </visual>
+    </link>
+
+    <joint name="rotor_0_joint" type="revolute">
+      <parent>base_link</parent><child>rotor_0</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit><lower>0</lower><upper>0</upper></limit>
+        <use_parent_model_frame>1</use_parent_model_frame>
+      </axis>
+    </joint>
+    <joint name="rotor_1_joint" type="revolute">
+      <parent>base_link</parent><child>rotor_1</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit><lower>0</lower><upper>0</upper></limit>
+        <use_parent_model_frame>1</use_parent_model_frame>
+      </axis>
+    </joint>
+    <joint name="rotor_2_joint" type="revolute">
+      <parent>base_link</parent><child>rotor_2</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit><lower>0</lower><upper>0</upper></limit>
+        <use_parent_model_frame>1</use_parent_model_frame>
+      </axis>
+    </joint>
+    <joint name="rotor_3_joint" type="revolute">
+      <parent>base_link</parent><child>rotor_3</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit><lower>0</lower><upper>0</upper></limit>
+        <use_parent_model_frame>1</use_parent_model_frame>
+      </axis>
+    </joint>
+
+    <!-- ===================== MID360 ===================== -->
+    <link name="mid360">
+      <pose>0 0 0.09 0 0 0</pose>
+      <inertial>
+        <mass>0.265</mass>
+        <inertia>
+          <ixx>0.0012</ixx><ixy>0</ixy><ixz>0</ixz>
+          <iyy>0.0012</iyy><iyz>0</iyz><izz>0.0012</izz>
+        </inertia>
+      </inertial>
+      <visual name="mid360_visual">
+        <geometry>
+          <mesh><uri>model://drone260/meshes/mid360.stl</uri></mesh>
+        </geometry>
+      </visual>
+
+      <!-- 3D 激光（MID360 近似）：发 sensor_msgs/PointCloud2 -->
+      <sensor name="mid360_lidar" type="gpu_ray">
+        <pose>0 0 0 0 0 0</pose>
+        <visualize>false</visualize>
+        <update_rate>10</update_rate>
+        <ray>
+          <scan>
+            <horizontal>
+              <samples>360</samples>
+              <resolution>1</resolution>
+              <min_angle>-3.14159</min_angle>
+              <max_angle>3.14159</max_angle>
+            </horizontal>
+            <vertical>
+              <samples>32</samples>
+              <resolution>1</resolution>
+              <min_angle>-0.12217</min_angle>   <!-- -7° -->
+              <max_angle>0.90757</max_angle>     <!-- 52° -->
+            </vertical>
+          </scan>
+          <range>
+            <min>0.1</min><max>40.0</max>
+            <resolution>0.01</resolution>
+          </range>
+          <noise><type>gaussian</type><mean>0.0</mean><stddev>0.01</stddev></noise>
+        </ray>
+        <plugin name="mid360_block_laser" filename="libgazebo_ros_block_laser.so">
+          <robotNamespace>/drone260</robotNamespace>
+          <topicName>/drone260/lidar_points</topicName>
+          <frameName>mid360</frameName>
+        </plugin>
+      </sensor>
+    </link>
+
+    <joint name="mid360_joint" type="fixed">
+      <parent>base_link</parent><child>mid360</child>
+    </joint>
+
+    <!-- ===================== PX4 飞控插件 ===================== -->
+    <plugin name="mavlink_interface" filename="libgazebo_mavlink_interface.so">
+      <robotNamespace></robotNamespace>
+      <imuSubTopic>/imu</imuSubTopic>
+      <magSubTopic>/mag</magSubTopic>
+      <baroSubTopic>/baro</baroSubTopic>
+      <mavlink_addr>INADDR_ANY</mavlink_addr>
+      <mavlink_tcp_port>4560</mavlink_tcp_port>
+      <mavlink_udp_port>14560</mavlink_udp_port>
+      <serialEnabled>false</serialEnabled>
+      <serialDevice>/dev/ttyACM0</serialDevice>
+      <baudRate>921600</baudRate>
+      <qgc_addr>INADDR_ANY</qgc_addr>
+      <qgc_udp_port>14550</qgc_udp_port>
+      <sdk_addr>INADDR_ANY</sdk_addr>
+      <sdk_udp_port>14540</sdk_udp_port>
+      <hil_mode>false</hil_mode>
+      <enable_lockstep>true</enable_lockstep>
+      <use_tcp>false</use_tcp>
+    </plugin>
+
+    <plugin name="imu_plugin" filename="libgazebo_imu_plugin.so">
+      <robotNamespace></robotNamespace>
+      <linkName>base_link</linkName>
+      <imuTopic>/imu</imuTopic>
+      <accelTopic>/accel</accelTopic>
+      <gyroTopic>/gyro</gyro>
+      <bodyToModelRotation>0</bodyToModelRotation>
+      <accelNoiseDensity>0.0028</accelNoiseDensity>
+      <accelRandomWalk>0.00086</accelRandomWalk>
+      <accelBiasCorrelationTime>300</accelBiasCorrelationTime>
+      <gyroNoiseDensity>0.00022</gyroNoiseDensity>
+      <gyroRandomWalk>0.000022</gyroRandomWalk>
+      <gyroBiasCorrelationTime>300</gyroBiasCorrelationTime>
+    </plugin>
+
+    <plugin name="magnetometer_plugin" filename="libgazebo_magnetometer_plugin.so">
+      <robotNamespace></robotNamespace>
+      <pubRate>100</pubRate>
+      <magTopic>/mag</magTopic>
+      <noiseDensity>0.0004</noiseDensity>
+      <randomWalk>6.4e-6</randomWalk>
+      <biasCorrelationTime>600</biasCorrelationTime>
+    </plugin>
+
+    <plugin name="barometer_plugin" filename="libgazebo_barometer_plugin.so">
+      <robotNamespace></robotNamespace>
+      <pubRate>50</pubRate>
+      <baroTopic>/baro</baroTopic>
+      <baroDriftPaPerSec>0</baroDriftPaPerSec>
+    </plugin>
+
+    <plugin name="gps_plugin" filename="libgazebo_gps_plugin.so">
+      <robotNamespace></robotNamespace>
+      <gpsTopic>/gps</gpsTopic>
+      <noiseDensity>0.0002</noiseDensity>
+      <randomWalk>0.00002</randomWalk>
+      <biasCorrelationTime>600</biasCorrelationTime>
+    </plugin>
+
+    <!-- 四个电机模型 -->
+    <plugin name="motor_model0" filename="libgazebo_motor_model.so">
+      <robotNamespace></robotNamespace>
+      <jointName>rotor_0_joint</jointName>
+      <linkName>rotor_0</linkName>
+      <turningDirection>ccw</turningDirection>
+      <timeConstantUp>0.018</timeConstantUp>
+      <timeConstantDown>0.18</timeConstantDown>
+      <maxRotVelocity>1500</maxRotVelocity>
+      <motorConstant>8.54858e-6</motorConstant>
+      <momentConstant>0.06</momentConstant>
+      <commandSubTopic>/gazebo/command/motor_speed</commandSubTopic>
+      <motorNumber>0</motorNumber>
+      <rotorDragCoefficient>0.0008</rotorDragCoefficient>
+      <rollingMomentCoefficient>0</rollingMomentCoefficient>
+      <motorTorqueConstant>6.429e-6</motorTorqueConstant>
+    </plugin>
+    <plugin name="motor_model1" filename="libgazebo_motor_model.so">
+      <robotNamespace></robotNamespace>
+      <jointName>rotor_1_joint</jointName>
+      <linkName>rotor_1</linkName>
+      <turningDirection>ccw</turningDirection>
+      <timeConstantUp>0.018</timeConstantDown>
+      <timeConstantDown>0.18</timeConstantDown>
+      <maxRotVelocity>1500</maxRotVelocity>
+      <motorConstant>8.54858e-6</motorConstant>
+      <momentConstant>0.06</momentConstant>
+      <commandSubTopic>/gazebo/command/motor_speed</commandSubTopic>
+      <motorNumber>1</motorNumber>
+      <rotorDragCoefficient>0.0008</rotorDragCoefficient>
+      <rollingMomentCoefficient>0</rollingMomentCoefficient>
+      <motorTorqueConstant>6.429e-6</motorTorqueConstant>
+    </plugin>
+    <plugin name="motor_model2" filename="libgazebo_motor_model.so">
+      <robotNamespace></robotNamespace>
+      <jointName>rotor_2_joint</jointName>
+      <linkName>rotor_2</linkName>
+      <turningDirection>cw</turningDirection>
+      <timeConstantUp>0.018</timeConstantUp>
+      <timeConstantDown>0.18</timeConstantDown>
+      <maxRotVelocity>1500</maxRotVelocity>
+      <motorConstant>8.54858e-6</motorConstant>
+      <momentConstant>0.06</momentConstant>
+      <commandSubTopic>/gazebo/command/motor_speed</commandSubTopic>
+      <motorNumber>2</motorNumber>
+      <rotorDragCoefficient>0.0008</rotorDragCoefficient>
+      <rollingMomentCoefficient>0</rollingMomentCoefficient>
+      <motorTorqueConstant>6.429e-6</motorTorqueConstant>
+    </plugin>
+    <plugin name="motor_model3" filename="libgazebo_motor_model.so">
+      <robotNamespace></robotNamespace>
+      <jointName>rotor_3_joint</jointName>
+      <linkName>rotor_3</linkName>
+      <turningDirection>cw</turningDirection>
+      <timeConstantUp>0.018</timeConstantUp>
+      <timeConstantDown>0.18</timeConstantDown>
+      <maxRotVelocity>1500</maxRotVelocity>
+      <motorConstant>8.54858e-6</motorConstant>
+      <momentConstant>0.06</momentConstant>
+      <commandSubTopic>/gazebo/command/motor_speed</commandSubTopic>
+      <motorNumber>3</motorNumber>
+      <rotorDragCoefficient>0.0008</rotorDragCoefficient>
+      <rollingMomentCoefficient>0</rollingMomentCoefficient>
+      <motorTorqueConstant>6.429e-6</motorTorqueConstant>
+    </plugin>
+
+    <!-- ROS 里程计：直接发 nav_msgs/Odometry，供 odom_bridge 转视觉定位 -->
+    <plugin name="p3d_plugin" filename="libgazebo_ros_p3d.so">
+      <robotNamespace></robotNamespace>
+      <frameName>world</frameName>
+      <bodyName>base_link</bodyName>
+      <topicName>/drone260/odom</topicName>
+      <updateRate>50</updateRate>
+      <xyzOffsets>0 0 0</xyzOffsets>
+      <rpyOffsets>0 0 0</rpyOffsets>
+      <gaussianNoise>0</gaussianNoise>
+    </plugin>
+  </model>
+</sdf>

@@ -1,0 +1,11 @@
+<launch>
+  <!-- 控制桥主节点（假设 MAVROS 已另行启动） -->
+  <node pkg="px4_bridge" type="bridge_node" name="px4_bridge" output="screen">
+    <rosparam command="load" file="$(find px4_bridge)/config/bridge.yaml"/>
+  </node>
+
+  <!-- 视觉里程计反向桥：Gazebo odom -> MAVROS vision_pose -->
+  <node pkg="px4_bridge" type="odom_bridge_node" name="px4_odom_bridge" output="screen">
+    <rosparam command="load" file="$(find px4_bridge)/config/odom_bridge.yaml"/>
+  </node>
+</launch>

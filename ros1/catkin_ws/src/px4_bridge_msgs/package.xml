@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>px4_bridge_msgs</name>
+  <version>0.1.0</version>
+  <description>Messages for the ROS1 (MAVROS) px4_bridge: TaskCommand / RealtimeControl / BridgeStatus</description>
+
+  <maintainer email="dev@example.com">px4-bridge</maintainer>
+  <license>MIT</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>message_generation</build_depend>
+  <exec_depend>message_runtime</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+</package>

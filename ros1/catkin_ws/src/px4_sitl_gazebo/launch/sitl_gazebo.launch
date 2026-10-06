@@ -1,0 +1,54 @@
+<launch>
+  <!--
+    PX4 SITL + Gazebo Classic + drone260
+    前提：已编译 PX4 源码并 source 其 ROS 环境（使 px4 包可被找到）：
+      cd ~/PX4-Autopilot
+      DONT_RUN=1 make px4_sitl_default gazebo-classic
+      source Tools/setup_gazebo.bash $(pwd) $(pwd)/build/px4_sitl_default
+      export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:$(pwd):$(pwd)/Tools/sitl_gazebo
+  -->
+
+  <!-- 机体初始位姿 -->
+  <arg name="x" default="0"/>
+  <arg name="y" default="0"/>
+  <arg name="z" default="0"/>
+  <arg name="R" default="0"/>
+  <arg name="P" default="0"/>
+  <arg name="Y" default="0"/>
+
+  <arg name="gui" default="true"/>
+  <arg name="verbose" default="false"/>
+  <arg name="world" default="$(find px4_sitl_gazebo)/worlds/custom.world"/>
+  <arg name="sdf"   default="$(find px4_sitl_gazebo)/models/drone260/model.sdf"/>
+
+  <!--
+    PX4 侧机架（airframe 参数）。
+    快速路径（默认，零改 PX4 源码）：drone260 是标准 X 型四旋翼，直接复用 iris 的
+    飞控参数/混控，Gazebo 中仍 spawn 我们自己的 drone260 模型与传感器。
+    完整路径：在 PX4 登记 drone260 机架后，将本值改为 gazebo-classic_drone260（见 README）。
+  -->
+  <arg name="sim_model" default="gazebo-classic_iris"/>
+
+  <!-- 让 Gazebo 找到本包模型（model://drone260/meshes） -->
+  <env name="GAZEBO_MODEL_PATH"
+       value="$(find px4_sitl_gazebo)/models:$(optenv GAZEBO_MODEL_PATH)"/>
+  <env name="PX4_SIM_MODEL" value="$(arg sim_model)"/>
+
+  <!-- PX4 SITL 进程 -->
+  <node name="sitl" pkg="px4" type="px4" output="screen" required="true"
+        args="$(find px4)/build/px4_sitl_default/etc -s etc/init.d-posix/rcS"/>
+
+  <!-- Gazebo Classic（gzserver + gzclient）加载世界 -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="gui" value="$(arg gui)"/>
+    <arg name="world_name" value="$(arg world)"/>
+    <arg name="verbose" value="$(arg verbose)"/>
+    <arg name="paused" value="false"/>
+  </include>
+
+  <!-- 生成 drone260 -->
+  <node name="drone260_spawn" pkg="gazebo_ros" type="spawn_model" output="screen"
+        args="-sdf -file $(arg sdf) -model drone260
+              -x $(arg x) -y $(arg y) -z $(arg z)
+              -R $(arg R) -P $(arg P) -Y $(arg Y)"/>
+</launch>
